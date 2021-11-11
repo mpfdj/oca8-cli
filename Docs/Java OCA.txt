@@ -1,0 +1,1093 @@
+---------------------------------------------
+Chapter 01 Java Building Blocks
+---------------------------------------------
+
+public static void main(String[] args) 
+public static void main(String args[]) 
+public static void main(String... args)  // variable arguments (varargs)
+
+java.lang.*  // default package
+
+java is organized in folders called packages
+cd c:\temp
+javac packagea/ClassA.java packageb/ClassB.java
+java packageb.ClassB
+
+// Using wildcard for class names
+java -cp ".;c:\temp\*" myPackage.MyClass
+
+public Chick() {}  // constructor
+public void Chick() {}  // just another method!
+
+// Imports (blz 12)
+import by class name (fqdn)
+import by wildcard
+wildcard is only applicable for class names! (not sub packages!)
+importing by class name takes precendence over wildcards
+you can not specify the same class name in two imports (twice)
+The type Date is ambiguous // naming conflict
+The import java.sql.Date collides with another import statement
+java.util.Date vs java.sql.Date
+when 2 classes are in the SAME package no import is required
+
+fields (directly set property not via setter)--> instance initializer blocks --> constructor
+
+8 primitive types (blz 21):
+boolean			1 bit
+byte			8 bits
+short			16 bits
+int				32 bits
+long 123L		64 bits
+float 1.23f		32 bits
+double			64 bits
+char 			16-bit Unicode value
+
+primitives are stored in memory
+are the basic building blocks of java types
+have no methods
+can't be null!!!
+lowercase by convention
+
+numbering systems (numbering literals):
+octal (0-7) 0 as prefix example: 017
+hexadecimal (0-9 A-F) 0x or 0X as prefix example: 0xFF
+binary (0-1) 0b or 0B as prefix example: 0b10
+
+double d = 1_000_0.0_0  // java 7 feature
+
+an object in memory can only be accessed via a reference (blz 24)
+
+// Declaring and initializing multiple variables (blz 26)
+String s1, s2;
+String s3 = "yes", s4 = "no";
+
+// Identifiers --> variable-, class- and interface names
+can start with _ or $ example String _myvar;
+letter , digit, _ or $
+
+// Variables (blz 29)
+local (inside a mehod) --> need to be initialized!
+instance (fields) --> no need to initialize, have default values
+class (static) --> no need to initialize, have default values
+
+// Default values
+boolean --> false
+byte, short, int, long --> 0
+float, double --> 0.0
+char --> NUL ('\u0000')
+obj reference --> null
+
+// Variable scoping
+local --> in scope from declaration to end of blocks
+instance --> in scope from declaration until obj garbage collection
+class --> in scope from declaration until program ends
+
+// Comments
+You can put comments anywhere!!! Even before the package statement
+// single line comment
+/* */ multi line comment
+/** */ javadoc comment
+
+// Ordering
+PIC --> Package, Import, Class (fields and methods)
+
+// File
+only 1 public class is allowed
+can contain multiple class definitions
+public class name equals file name
+public class name equals file name
+
+// Garbage collection (blz 37)
+heap represents a large pool of unused memory allocated to your java application
+process of automatically freeing memory on the heap by deleting objs that are no longer reachable in  your program
+System.gc() is NOT garanteed to run
+when the obj no longer has ny references pointing to it
+when all references to the obj are out of scope
+finalize() runs 0 or once
+
+// Object vs reference (blz 36)
+reference variable has a name
+obj has no name
+all references are the same size
+objs can NOT be passed or returned by a method only the reference
+
+// Parameter passing
+in java parameters are passed by value
+
+// Java
+Is interpeted. Gets compiled to bytecode once!
+
+
+---------------------------------------------
+Chapter 02 Operators and Statements
+---------------------------------------------
+
+// Unary operator (single input)
+takes one element (operand) to produce another element
+++x, x++, −−x, x−−, +x, -x, !x
+
+// Binary operator
+takes two elements (operands) to produce another element
+a+b, a-b, a/b, a%b, a*b
+
+// Ternary operator (conditional operator)
+takes three elements (operands) to product another element
+this operator is often the only existing ternary operator in a computer language
+
+If foo is selected, assign selected foo to bar. If not, assign baz to bar.
+Object bar = foo.isSelected() ? foo : baz;
+
+// Upcast
+// Assignment operator
+// Automatically promotes
+double d = 3 --> outputs 3.0 --> from a smaller data type to a larger data type
+Java automatically promotes from smaller to larger data types
+casting primitives is required any time you are going from a larger numerical data type to a smaller numerical data type or from a floating point number to an integral value
+down casting a primitive(overflow and underflow else error: incompatible types: possible lossy conversion from int to short)
+
+// Division and Modulo
+/ is division --> 9/3 = 3
+% is modulo (rest na deling) --> 9%3 = 0
+
+// Bewerkingsvolgorde
+https://nl.wikipedia.org/wiki/Bewerkingsvolgorde
+unary operators go before binary operators
+*, / and % are equal
++ and - are equal
+multiplicative operators have a higher order than additive operators
+
+// Primitive numeric promotion (blz 55)
+java automatically promotes to the larger value of the two data types
+java automatically promotes to the floating point value
+byte, short and char are first promoted to int ANY time
+the resulting value will have the same data type as its promoted operands
+
+logical inversion !
+numerical negate -
+
+// Increment and Decrement operators (blz 59)
+pre increment (++x) and post increment (x++)
+pre decrement (--x) and post decrement (x--)
+
+pre --> the operator is applied before the return value so returns the new value in the expression
+post --> the operator is applied after the return value so return the original value in the expression
+
+int i = 0;
+System.out.println(++i) --> 1  // i=1
+System.out.println(i++) --> 1  // i=2
+System.out.println(i); --> 2	
+
+// Binary operators
+assignment operator (=)
+compound assignment operator (+= and -=) --> will automatically down cast 
+
+long x = 10;
+int y = 5;
+y = y * x; // does not compile
+y *= x // compiles
+
+// Relational operators
+>, >=, <, <=
+
+// Logical operators
+& AND
+| OR
+^ XOR
+
+// Short-circuit operators (blz 65)
+&&
+||
+the right-hand side of the expression may never be evaluated when the final result can be determined by the left-hand side
+
+boolean x = true || (y < 4);  // (y < 4) is never evaluated
+if (x != null && x.getValue() < 5) ...;
+if (x != null & x.getValue() < 5) ...; // Throws an exception when x is null
+
+// Equality operator (==)
+comparing 2 primitive types. If the numeric values are of different data types, the values are automatically promoted. For example 5 == 5.00 is true
+for object comparison the equality operator is applied to the references
+
+// Conditional operator (ternary operator)
+? :
+is the only operator that takes 3 operands
+is similar to if then else
+behaves similar to short-circuit operator
+
+System.out.println((y < 5) ? 9 : "Horse" );  // compiles because println() does not care the different data types
+int animal = (y < 5) ? 9 : "Horse";  // does not compile because animal is an int
+
+// Switch statement (blz 75)
+if no case is found the default statement is executed when no default is found the entire switch statement is skipped
+multiple branches may be executed
+can contain 0 case statements
+target variable
+the order of the case and default statement are not important
+executes all of the proceeding statements until it finds a break statement or the switch is ended
+the case statement value must be a literal, enum constant or final constant variable!!!
+an enum switch case label must be the UNQUALIFIED name of an enumeration constant so String fails!!!
+
+// The following primitives and wrapper classes are supported
+byte and Byte
+short and Short
+int and Integer
+char and Character
+String
+enum values
+
+
+// While loop
+may also exit on a break statement
+may also exit on a return statement (method)
+the condition is checked before each iteration
+
+// Do-while loop
+Executes at least once!!!
+do { System.out.println(x); ++x } while(x<10);
+
+// For loop (blz 81 nog eens doorlezen!) 
+basic for loop
+for each loop
+for each loops are converted to basic for loops by the compiler
+the condition is checked before each iteration
+the update statement is executed after each iteration!!!
+each of the for loop components is optional (initialization; booleanExpression; updateStatement)
+
+// Advanced flow / loop control (blz 91)
+optional labels OUTER_LOOP:
+break statement (while, do-while, for, switch)
+continue statement (while, do-while, for)
+
+// Watch out for
+Assignment operator in if-statement if(b=true) System.out.println("bla");
+Infinite loops
+Variable scopes (for example do-while-statement)
+Incompatible data types in ternary operators (sop does not care!)
+Evaluate from left to right
+Array Index Out Of Bounds (for-loop)
+System.out.println() does not care about types!
+List<String> mylist = Arrays.asList(array);  // creates a BACKED FIXED SIZE List
+blz 151 ==, .equals() on String and StringBuilder
+== compares primitves or references pointing to the same object
+equals compares the objects (equals() is implemented in the Object class but can be overridden)
+Watch out for RuntimeExpections for example StringIndexOutOfBoundsException, ArrayIndexOutOfBoundsException
+StringBuilder sb = "HelloWorld";  // does not compile
+StringBuilder sb = new StringBuilder("HelloWorld");  // compiles
+reassigning final variables
+default values of variables (not set when scope is local!)
+initialzing blocks
+
+---------------------------------------------
+03 Core Java API's
+---------------------------------------------
+String and StringBuilder
+Array and ArrayList
+dates
+comparing objects
+
+// String class
+String name = "Fluffy";  // literals are placed in the JVM string pool
+String name = new String("Fluffy");  // goes on the heap
+
+// Concatenation (blz 103)
+if BOTH operands are numeric + means addition
+if either operand is a String + means concatenation 
+evaluate from left to right
+sop(1 + 2)  // 3
+sop("a" + 1)  // a1  
+sop(1 + 2 + "a")  // 3a !!!
+
+String is immutable (can not change) (blz 104) no setter method String only changes when using an assignment operator  s.concat("abc") does not change s (s = s.concat("abc") does!)
+StringBuilder is mutable, most of the methods return a reference to the current object to allow method chaining  // sb.reverse() changes sb
+The string pool is a location in the JVM that collects all literal Strings
+never use == on Strings
+== compares reference values
+equals() compare values (and is implemented in Object)
+
+String s1 = new String("abc");
+String s2 = new String("abc");
+System.out.println(s1 == s2)  // false the String objs are placed on the heap instead of the JVM string pool
+Syste.out.println(s1.equals(s2)) // true
+
+String x = "HelloWorld";
+String y = "HelloWorld";
+x == y;  // true as both LITERALS are placed on the JVM string pool (values are the same at compile time!)
+
+String x = "HelloWorld";
+String y = " HelloWorld".trim();
+x == y  // false values are different compile time
+
+// Important methods of the String class (blz 106)
+a String is 0-indexed !!!
+a String is a sequence of characters and is implemented as an array (same for StringBuilder)
+
+"animals".length();  // 7
+"animals".charAt(3);  // m
+"animals".indexOf("al", 3);  // 4  finds the first index that matches returns -1 when not found
+"animals".substring(3, 4);  // m  reads one character; end index means stop at index NOT INCLUDE! TRICKY! (blz 107) // throws java.lang.StringIndexOutOfBoundsException
+"animals".substring(3, 3);  // returns an empty string
+"ABC".toLowerCase();  // abc  note the original string stays the same!
+"abc".toUpperCase();  // ABC
+"ABC".equals("abc");  // false 
+"ABC".equalsIgnoreCase("abc");  // true
+"animals".startsWith("an");  // true
+"animals".endsWith("mals");  // true
+"animals".contains("ni");  // true
+"abc".replace('a', 'b');  // bbc  takes a Char, a CharSequence or String
+" a b c ".trim();  // "a b c"  removes whitespace from the beginning and the end NOT from the middle
+
+// Important methods of the StringBuilder class (blz 115)
+sb.append(); --> StringBuilder sb = new StringBuilder().append(1).append(true).append("abc");  // 1trueabc
+sb.insert(); --> StringBuilder sb = new StringBuilder("animals").insert(0, "-");  // -animals  the offset is the index where we want to insert; TRICKY! // throws java.lang.StringIndexOutOfBoundsException
+sb.insert(); --> StringBuilder sb = new StringBuilder("animals").insert(7, "-");  // animals-
+sb.delete(); --> StringBuilder sb = new StringBuilder("abcdef").delete(1, 3); // adef  end index means stop at index NOT INCLUDE! TRICKY!
+sb.deleteCharAt();
+sb.reverse();
+sb.toString();
+
+// Arrays (blz 119)
+int[] numbers = new int[3];  // is set with default values 0 in this case
+int[] numbers = new int { 42, 53, 59 };  // default values are explicitly set (else the normal default values are used!)
+int[] numbers = { 42, 53, 59 }  // anonymous array Java 8 feature
+
+import java.util.*;
+import java.util.Arrays;
+check example at blz 123
+Arrays.sort(numbers);  // Strings sort alphabetically, numbers by numeric (sorting order is numbers, uppercase, lowercase)
+
+// Valid array declarations
+int[] numbers;
+int [] numbers;
+int numbers[];
+int numbers [];
+
+int[] numbers1, numbers2;  // declares two arrays
+int numbers1[], numbers2;  // declares one array
+
+// Searching an array (blz 125)
+Arrays.binarySearch();
+array has to be sorted else unpredictable results might occur
+returns the index of the match
+when not found a negative value is returned one smaller than the negative index
+
+int[] numbers = { 2, 4, 6, 8 };
+System.out.println(Arrays.binarySearch(numbers, 2));  // 0
+System.out.println(Arrays.binarySearch(numbers, 4));  // 1
+System.out.println(Arrays.binarySearch(numbers, 1));  // --> 0 --> -(0) -1 = -1  one smaller than the negative index
+System.out.println(Arrays.binarySearch(numbers, 3));  // --> 1 --> -(1) -1 = -2
+System.out.println(Arrays.binarySearch(numbers, 9));  // --> 4 --> -(4) -1 = -5
+
+// Multidimensional arrays (blz 126)
+int[][] numbers;
+int numbers [][];
+int[] numbers[];
+int[] numbers[], numbers2[][];  // note numbers2 is a 3D array!
+
+// Asymmetric array
+int[][] numbers = { {1,4}, {3}, {9,8,7} }
+
+int[][] numbers = new int[3][];
+numbers[0] = new int[5];
+numbers[1] = new int[3];
+numbers[2] = new int[1];
+
+// ArrayList
+import java.util.*;
+import java.util.ArrayList;
+
+ArrayList list1 = new ArrayList();
+ArrayList list2 = new ArrayList(10);
+ArrayList list3 = new ArrayList(list2);
+ArrayList<String> list4 = new ArrayList<String>();
+ArrayList<String> list5 = new ArrayList<>();  // java 7 feature
+
+ArrayList list = new ArrayList();  // No type is specified so type is Object
+list.add("hawk");
+list.add(Boolean.TRUE);
+list.add(1);
+list.add(false);
+System.out.println(list);  // ["hawk", true, 1, false]  implements the toString method
+
+// Important methods of the ArrayList class (blz 130)
+add("hawk");  // adds an element at the end or at a specified index
+add(3, "hawk");
+remove("hawk");  // removes the first matching value or the element at a specified index
+remove(3);
+set(0, "hawk");  // replaces an element
+isEmpty();
+size();
+clear();  // discards all elements (size is 0)
+contains("hawk");
+list1.equals(list2);  // compares two lists to see if they contain the elements in the same order
+
+// Wrapper classes (blz 134)
+Boolean bo 	= new Boolean(true);
+Byte b 		= new Byte((byte) 1);  // downcast int
+Short s 	= new Short((short) 1);  // downcast int
+Integer i 	= new Integer(1);
+Long l 		= new Long(1);  // automatically upcasted
+Float f 	= new Float(1.0);  // wtf why no downcast??? 1.0f or (float)
+Double d 	= new Double(1.0);
+Character c = new Character('a');
+
+convert a STRING to a primitive for example Integer.parseInt("123");
+convert a STRING to a Wrapper class for example Integer.valueOf("123");
+with autoboxing you can type the primitive value and it will automatically be converted to the Wrapper class (blz 136)
+unboxing is the opposite (Wrapper class to primitive)
+
+// convert to primitive
+boolean bo1 = Boolean.parseBoolean("TrUe");  // case insensitive
+byte b1 	= Byte.parseByte("1");
+short s1 	= Short.parseShort("1");
+int i1 		= Integer.parseInt("1");
+long l1 	= Long.parseLong("1");
+float f1 	= Float.parseFloat("1");
+double d1 	= Double.parseDouble("1");
+
+// convert to Wrapper class
+Boolean bo2 = Boolean.valueOf("true");
+Byte b2 	= Byte.valueOf("1");
+Short s2 	= Short.valueOf("1");
+Integer i2 	= Integer.valueOf("1");
+Long l2 	= Long.valueOf("1");
+Float f2 	= Float.valueOf("1.00f");
+Double d2 	= Double.valueOf("1");
+
+// Autoboxing
+List<Double> weights = new ArrayList<>();
+weights.add(50.5);  // autoboxing here
+weights.add(new Double(60));
+weights.remove(50.5);
+double d = weights.get(0);  // 60.0  unboxing here
+
+List<Integer> numbers = new List<>();
+numbers.add(1);	 // [1]  autoboxing here
+numbers.add(2);  // [1 , 2]  autoboxing here
+numbers.remove(1);  // [2]  note to remove VALUE 1 do numbers.remove(Integer(1)); now INDEX 1 is removed
+
+// Converting between array and list (blz 136)
+
+// list to array (not linked / backed)
+String[] arr = mylist.toArray(new String[0]);  // toArray runs on list
+
+// array to list
+String[] array = {"hawk", "robin"};
+List<String> mylist = Arrays.asList(array);  // asList runs on Arrays; it creates a BACKED FIXED SIZE List, when changes are made to one its also available to the other
+Collections.sort(mylist);  // Sorts a List
+mylist.add("blue jay");  // Throws an error
+
+List<String> mylist = Arrays.asList("one", "two");  // asList takes a varargs as param this is a one-liner to create a list
+
+// Working with Dates and Times (blz 138)
+import java.time.*;
+the date and time classes are immutable (so you need to assign the result of the methods to a reference variable) TRICKY! (blz 143)
+
+System.out.println(LocalDate.now());  // 2015-01-20  				  LocalDate contains a date - no time and no time zone
+System.out.println(LocalTime.now());  // 12:45:18.401  				  LocalTime contains a time - no date and no time zone
+System.out.println(LocalDateTime.now());  // 2015-01-20T12:45:18.401  LocalDateTime contains both date and time - no time zone Java uses a T to separate date and time when converting LocalDateTime to String
+
+MM/DD/YYYY US date format
+
+LocalDate d = new LocalDate(); // does not compile! date and time classes have private constructors to force you using the static methods!
+LocalDate d = LocalDate.of(2015, 1, 20);
+LocalDate d = LocalDate.of(2015, Month.JANUARY, 20);
+
+LocalTime t = LocalTime.of(12, 45, 18, 401);
+
+LocalDateTime dt = LocalDateTime(2015, Month.JANUARY, 20, 12, 45, 18, 401);
+LocalDateTime dt = LocalDateTime(d, t);
+
+dt.plusYears(1).minusMonths(1);  // plus and minus methods can be chained
+
+// Period (blz 145)
+is applicable for years, months, weeks and days (Duration is used for time)
+can not be chained!
+
+Period annually = Period.ofYears(1);
+Period quarterly = Period.ofMonths(3);
+Period everyThreeWeeks = Period.ofWeeks(3);
+Period everyOtherDay = Period.ofDays(2);
+Period everyYearAndWeek = Period.of(1, 0, 7);  // YYYY, MM, DD
+
+Period wrong = Period.ofYears(1).ofWeeks(1);  // returns every week!
+
+equivalent to
+
+Period wrong = Period.ofYears(1);
+wrong = Period.ofWeeks(1);
+
+// Formatting Dates and Times (blz 148)
+convert a date or time to a formatted String
+can be used to format any type of date and/or time object
+import java.time.format.*;
+
+// The format() method is declared on both the formatter object and the date/time objects !!!
+DateTimeFormatter shortDateTime = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT);
+System.out.println(shortDateTime.format(date));  // called on DateTimeFormatter
+System.out.println(date.format(shortDateTime));  // called on LocalDate
+
+// Two predefined formats (these two don't show time zones)
+FormatStyle.SHORT
+FormatStyle.MEDIUM
+
+DateTimeFormatter f = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT);  // Date
+DateTimeFormatter f = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT);  // Time
+DateTimeFormatter f = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT);  // DateTime
+
+DateTimeFormatter f1 = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT);
+System.out.println(f1.format(LocalDateTime.now()));  // 12/30/15 3:03 PM
+
+// Create your own DateTimeFormatter pattern
+DateTimeFormatter f = DateTimeFormatter.ofPattern("MMMM dd, yyyy, hh:mm");  // M: 1, MM: 01, MMM: Jan, MMMM January | d: 1, dd: 01 | yy: 15, yyyy: 2015 | h: 9, hh: 09 | m: 2, mm: 02
+System.out.println(LocalDate.now().format(f));  // January 01, 2015, 09:02
+
+// Parse Date and Time
+convert a formatted String to a Date or Time
+DateTimeFormatter f = DateTimeFormatter("MM dd yyyy");
+LocalDate d = LocalDate.parseDate("01 02 2015", f)  // parseDate takes a formatter too else default format is used
+
+DateTimeFormatter f2 = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM);
+System.out.println(f2.format(LocalDateTime.now()));  // Dec 30, 2015 3:03:20 PM
+
+
+---------------------------------------------
+04 Methods and Encapsulation
+---------------------------------------------
+
+// Four access modifiers
+private  // members can only be called from within the same class
+default  // members can only be called from classes in the same package (package private)
+protected  // members can only be called from classes in the same package or subclass
+public  // members can be called from any class
+
+// Three optional specifiers
+final
+static
+abstract
+
+a member is a method or a field
+
+// Protected access modifier
+a protected member is used without referring to a variable (direct call via extends)
+a protected member is used through a variable, if it's a SUBCLASS protected access is allowed
+note: the reference variable ISN'T a Swan the code happens to be in the Swan class (blz 178)
+
+// Optional specifiers
+static  // class methods
+final  // method is not allowed to be overridden
+abstract  // only method signature is provided (no implementation)
+
+// Return type is mandatory
+If no value is returned the return type is void
+
+// Varargs (variable method arguments) (blz 172)
+A method signature can contain only one varargs param and it must be the one in the list
+public void test(String message, String... myParams) {}
+
+public static void walk(int start, int... nums) {
+  System.out.println(nums.length);
+}
+
+public static void main(String[] args) {
+  walk(1);  		// 0
+  walk(1 , null);  	// Compiler error
+  walk(1, 2);  		// 1
+  walk(1, 2, 3);  	// 2
+  walk(1, new int[] {2, 3} );  // 2
+}
+
+// Static methods and fields (blz 181)
+static members don't require an instance of a class
+they exist on class level not on instance level
+for utility or helper methods that don't require any object statement
+for state that is shared by all instances of a class, like a counter (all instances must share the same state)
+static methods can also be called on an instance variable even though it's null!!! TRICKY! (blz 182 / 183)
+static members CAN'T call an instance member (blz 183)  // new Static.third();  calls a method third() on a instance of a class called Static
+instance members CAN call static members (blz 184) 
+
+// Static final variables (blz 185)
+a final variable can't be reassigned
+a final reference variable can also not be reassigned but methods can be called (see below example)!!!!
+else a compile error is thrown error: cannot assign a value to final variable
+STATIC FINAL variables MUST be initialized they don't have default values! (blz 186) can be assigned on declaration or in a static initialize block (not in a normal initialize block) or constructor
+
+private static final ArrayList<String> values = new ArrayList<>();
+public static void main(String[] args) {
+  values.add("hello world");  // methods are allowed on final variables ArrayList is mutable
+}
+
+// Static imports (blz 187)
+import static java.lang.Math.PI;
+import static java.lang.Math.cos;
+import static java.lang.Math.*;  //import all static members from the Math class static import applies to CLASS MEMBERS
+import static java.util.Arrays.asList;
+import static java.util.Arrays.* 
+if we created an asList method in our class it would use this one and not the imported one
+
+// Passing data among methods (blz 188)
+Java uses pass-by-value to get data into a method
+this means a COPY OF THE VARIABLE is made and the method receives that copy
+note: for primitives it doesn't affect the caller
+note: for reference variables it does affect the caller (since the copy points to the same object) watch out for passing String objects! Strings are IMMUTABLE (create new String objects) TRICKY (blz 191)
+
+// Overloading (blz 191)
+In the Java programming language, a method signature is the METHOD NAME and the NUMBER and TYPE of its PARAMETERS. Return types and thrown exceptions are not considered to be a part of the method signature.
+method DECLARATION: access modifier | specifier | return type | name | exception list | body (blz 166)
+varargs and array are considered the same, compile error: cannot declare both test(int...) and test(int[]) in Overloading
+Java tries to find the most specific matching overloaded method (primitive is preferred)
+
+// Overloading order (blz 195) finding a match
+exact match
+larger primitive
+autoboxed
+object
+varargs
+
+TRICKY overloading on page 195
+it can't do two step conversions!
+
+public static void play(Long l) {}
+public static void play(Long... l) {}
+public static void main(String[] args) {
+  play(4);  // compile error: int cannot be converted to Long
+}
+
+
+// Does not compile int[] and int... are considered the same
+public static void test(int[] numbers) {
+	System.out.println(numbers.length);
+}
+public static void test(int... numbers) {
+	System.out.println(numbers.length);
+}
+
+// Does compile (considered overloading)
+// test(3);  // method with the primitive is automatically picked
+
+public static void test(int number) {
+	System.out.println(number);
+}
+public static void test(Integer number) {
+	System.out.println(number);
+}
+
+// Creating constructors (blz 196)
+the this keyword tells Java you want to reference an instance variable
+constructors don't have a return type
+watch out for so called constructors
+constructors also have a access modifier
+the default constructor is created during compile time (it's not in the .java file but it will exist in the .class file)
+the default constructor is only supplied if there are no constructors defined! (default constructor =  Java generated constructor)
+this("some value");  // calls another constructor on the same instance of a class (blz 200)
+the this() call must be the first noncommented statement in the constructor
+overloaded constructors often call each other, each constructor adds one param util getting to the constructor that does all the work. Also known as constructor chaining (blz 201)
+
+// Final fields (blz 202)
+final INSTANCE variables must be assigned a value exactly once
+this can happen in 3 places:
+- in the line of the declaration
+- in a INSTANCE initializer block
+- in a constructor
+when the constructor ends all final instance variables must be set!
+
+// Order of initialization (blz 202)
+1. superclass
+2. static variable declarations and static initializers in the order they appear
+3. instance variable declarations and instance initializers in the order they appear
+4. the constructor
+
+note 
+3 and 4 only run when a new instance is created (with the keyword new) TRICKY (also 1 and 2)
+the 1 and 2 are executed when the class is first loaded (when the java command is issued)
+
+TRICKY (blz 227)
+static initialization blocks are static and hence they belong to a particular class and not to the instances of class
+Instance initialization blocks do not belong to a class and they are executed every time a new instance of the class is created.
+Static initialization blocks run WHEN THE CLASS IS FIRST LOADED INTO JVM
+Instance initialization blocks run whenever a new instance of class is created.
+
+// Encapsulating data (blz 205)
+accessor method aka getter
+mutator aka setter
+instance variable aka property
+JavaBeans are reusable components (blz 206)
+
+- properties are private  // private boolean happy = true;
+- boolean getter start with is  // public boolean isHappy() { return true; }  --> TRICKY
+- non boolean getters start with get  // public int getNumberOfEggs() { return 10; }
+- setters start with set  // public void setHappy(boolean happy) { this.happy = happy; }
+
+// Immutable classes (blz 207)
+an immutable class has no setters
+their properties are set by the constructor
+their properties CAN'T change after instantiation
+immutable refers to preventing callers from changing the instance variables at all
+be careful about the return type as Java passes arguments by value (makes a copy) (for example StringBuilder)
+make a DEFENSIVE COPY on the constructor and return a new object on the getter (blz 208)
+String is safe to return  because it's immutable in the first place
+
+// Lambdas (blz 208)
+you specify what to do rather dealing with state of objects
+you focus more on expressions than loops
+functional programming uses lambda expressions to write code
+think of a lambda expression as an anonymous method with params and a body but no name
+lambdas work with interface that have only one method, these are called functional interfaces
+import java.util.function.Predicate;  // this means you don't need your own interface anymore and can put everything in one class
+
+public interface Predicate<T> { 
+  boolean test(T t);
+}
+
+
+the scope for the OCA exam, lambdas return a boolean (blz 213)
+https://dzone.com/articles/java-lambda-expressions-basics
+
+// Compiles
+() -> true
+a -> a.startsWith("test")
+(String a) -> a.startsWith("test")
+(a, b) -> a.startsWith("test")
+(String a, String b) -> a.startsWith("test")  // b not used
+
+// Does not compile
+a, b -> a.startsWith("test")  // no parenthesis 
+a -> { a.startsWith("test"); }  // no return statement
+a -> { return a.startsWith("test") }  // ; is missing
+(a, b) -> { int a = 0; return 5; }  // can't redeclare a
+String a -> a.startsWith("test")  // use parenthesis (String a)
+
+someRandomString.startsWith("blabla") method returns a boolean
+
+// ArrayList has a removeIf() method that takes a Predicate (blz 215)
+List<String> bunnies = new ArrayList<>();
+bunnies.add("flappy");
+bunnies.add("hoppy");
+bunnies.removeIf(s -> s.charAt(0) != 'h');
+
+
+---------------------------------------------
+05 Class design
+---------------------------------------------
+
+// Inheritance
+include any public and protected primitives, objects and methods (members)
+parent class (ancestor)
+child class (descendent)
+Java supports single inheritance for classes (and also multi levels of inheritance) inheritance tree
+a class can only have one parent (a parent can have multiple children)
+but classes can implement multiple interface
+Java prevents a class from being extended by marking the class with the final specifier!!! (blz 235)
+
+a class can have a public or a default access modifier (package private) (private and protected modifiers are only applicable for inner classes)
+a class can have a final or an abstract specifier
+
+Java allows only one public class per file!
+when you define a class that doesn't extend from another class the compiler automatically adds extends java.lang.Object
+at the top of the inheritance tree there is always java.lang.Object
+
+----------
+| Object |
+----------
+	|
+	|
+----------
+| parent |
+----------
+	|
+	|
+----------
+| child  |
+----------
+	|
+	|
+----------
+| child  |
+----------
+	 
+// Constructors (blz 238)
+the FIRST STATEMENT of every constructor is this(...) or super()
+this() doesn't compile!!!  error: recursive constructor invocation
+super() calls the constructor of the direct parent class
+the parent constructor (super(...) ) is always called before the child constructor (this(...)) all the way to java.lang.Object (so Object is first created) (blz 243)
+
+// Compiler enhancements (blz 241)
+Below definitions evaluate to the same
+
+public class Donkey {}  // default no-args constructor is inserted by the compiler
+
+public class Donkey { 
+	public Donkey() {}  // super() is inserted by the compiler
+}
+
+public class Donkey {
+	public Donkey() { 
+		super();
+	}
+}
+
+// super() vs super TRICKY!!! (blz 246)
+super() calls a parent constructor and must be on the first line of a constructor of a child class
+super is a keyword used to reference a member defined in a parent class (and may be used throughout the child class)
+
+public Rabbit(int age) {
+	super();
+	super.setAge(10);
+}
+
+
+// Inheriting methods (blz 248)
+overloading occurs when two or more methods have the exact same name but DIFFERENT PARAMETERS, a child class can overload a method from the parent class
+overriding means that a method inherited from a parent class will be changed - basically the method is slightly changed to fit with the needs of the child class, this is ONLY applicable for the child class
+when you see a method make sure whether its overridden or overloaded
+if the return type of the method is the only thing changed, then this will result in a compiler error!!! TRICKY
+
+// Overriding methods (blz 248)
+a method signature is the METHOD NAME and the NUMBER and TYPE of its PARAMETERS. Return types and thrown exceptions are not considered to be a part of the method signature.
+the method in the child class must have the same signature as the method in the parent class
+the methods in the child class must have the same or a broader access modifier (for example if the method in the parent class is protected the method in the child class can be public) 
+the method in the child class may NOT throw a NEW checked exception or one that is more generic than the parent class
+the return value must be the same or a subclass or the method in the parent class (for example the parent class returns a Number and child class returns Integer) aka covariant return types
+access modifiers, return types and exceptions must be compatible this the parent class
+watch out for private methods!!! they are not overridden but they are REDECLARED (blz 252) so the override rules are not applicable here TRICKY!!!
+
+// Hiding static methods (blz 252)
+a hidden method occurs when a child class defines a STATIC METHOD with the same name and signature as a static method defined in a parent class
+
+// Final methods (blz 256)
+final methods can't be OVERRIDDEN or HIDDEN! but can be overloaded!
+the final modifier is only used on methods when the author of the parent method wants to guarantee very precise behaviour
+
+// Inheriting methods
+overloading methods
+overriding methods --> final methods can't be overridden
+hide static methods
+
+// Inheriting variables (blz 257)
+Java doesn't allow variables to be overridden but instead HIDDEN
+this creates two copies of the variable within an instance of the child class: one instance defined for the parent reference and another defined for the child reference
+you define a variable with the same name as a variable in a parent class
+you can reference the parent value of the variable with the keyword super  --> System.out.println(super.tailLength);
+
+// Class modifiers and specifiers (blz 260 / 261)
+public or default (none) access modifier
+public class Test{ }   or  class Test{ }
+
+abstract or final specifier
+final specifiers --> class can't be extended, method can't be overridden
+
+abstract class Test{ }  or  final class Test{ }
+NEVER final abstract class Test{ }  // class can never be final and abstract
+NEVER private abstract HelloWorld();  // method can never be private and abstract
+
+// Abstract classes
+can't be instantiated it can only be extended
+can have abstract and non abstract methods
+the child class will provide an implementation by OVERRIDING the parent method (not overloading)!!!! --> SEE RULES REGARDING OVERRIDING (error: HumpbackWhale is not abstract and does not override abstract method sing() in Whale)
+an abstract class becomes useful when it is extended by a concrete subclass
+the FIRST concrete subclass has to implement ALL abstract methods (blz 263)
+abstract classes can extend other abstract classes and are not required to provide implementations!!! (blz 264) but they can also provide implementations
+if an INTERMEDIATE ABSTRACT CLASS provides an implementation for an abstract method, than that method is inherited by subclasses as a concrete method
+overview of rules on abstract classes blz 265
+
+public abstract class Whale {
+	protected abstract void sing();
+}
+
+public class HumpbackWhale extends Whale {
+	public void sing() {  // overrride note access modifier is public so broader than the parent
+		System.out.println("Altijd is kortjakje ziek");
+	}
+}
+
+// Interfaces (blz 266 / 268)
+interface have PUBLIC or DEFAULT access modifiers
+interfaces are not required to define any methods or constants
+methods are considered PUBLIC ABSTRACT  --> public abstract int getMaximumDepth();
+constants are considered PUBLIC STATIC FINAL  --> public static final int MINIMUM_DEPTH = 2;
+
+provides a list of static methods
+provides a list of default methods (new Java 8 feature blz 275) --> defines a method with a default implementation, in this manner classes have the option to OVERRIDE the default method (it's not abstract, final or static but is considered public)
+default methods are only applicable to interface (not to abstract classes!)
+
+// Default methods
+
+
+
+public abstract interface CanBurrow {
+	public static final int MINIMUM_DEPTH = 2;
+	public abstract int getMaximumDepth();
+}
+
+interface CanBurrow {  // default access!!!
+	int MINIMUM_DEPTH = 2;  // PUBLIC ACCESS NOT DEFAULT!!! equivalent to the above
+	int getMaximumDepth();
+}
+
+// Inheriting an interface (blz 269)
+an interface that EXTENDS another interface, as well as an abstract class that IMPLEMENTS an interface, inherits all of the abstract methods as its own abstract methods
+the FIRST concrete class that IMPLEMENTS, or EXTENDS an abstract class that implements an interface, must provide an implementation for all inherited abstract methods
+the exam creators are fond of questions that mix class and interface terminology (blz 270)
+the only connection between a class and and interface is --> MyClass implements MyInterface
+in Java it is not possible to define two methods in a class with the same name and input parameters but different return types
+
+public interface HasTail {
+	public int getTailLength();
+	public default String getName() {  // note the default keyword
+		return "Johnny";
+	}
+}
+
+public interface HasWhiskers {
+	public int getNumberOfWhiskers();
+}
+
+public interface Seal extends HasTail, HasWhiskers { }
+
+public abstract class HarborSeal implements HasTail, HasWhiskers { }
+
+public class HarborSeal implements HasTail, HasWhiskers { }  // doesn't compile because the first concrete class must implement all inherited abstract methods
+
+
+// Default methods and multiple inheritance (blz 277)
+if a class implements two interfaces that have the SAME DEFAULT METHOD (signature) the compiler will throw an error --> MULTIPLE INHERITANCE issues
+solution is to override the method in the first concrete class
+
+// Static interface methods (blz 278)
+a class that implements two interfaces with the same static method (signature) WILL COMPILE 
+because the static methods are NOT INHERITED by the subclass
+and must be access with a reference to the interface name
+static interface methods have no MULTIPLE INHERITANCE issues
+
+
+public interface Hop {
+	static int getJumpHeigth() { return 8; }
+}
+
+public class Bunny implements Hop {
+	public static void main(String[] args) {
+		System.out.println(Hop.getJumpHeigth());
+	}
+}
+
+// Polymorphism (blz 280)
+is the property of an object to take on many different forms
+a Java object may be accessed using a reference:
+- with the same type as the object
+- that is a superclass of the object
+- that is an interface implemented by the OBJECT one of its SUPERCLASS-es
+
+--> TRICKY watch out for overridden methods!!
+
+it all has to do with visibility!
+
+// Object vs Reference (blz 281)
+in Java all objects are accessed by reference
+as a developer you NEVER have direct access to the object itself
+the object can be considered as the entity in memory (allocated by the jvm)
+reference variables go on the stack
+the only thing that changes is the reference
+by changing the reference type it may give you access to new properties and methods of the object (but those properties already existed before the reference was changed!!!)
+the same object exists in memory regardless of which reference is pointing to it
+
+--> it all has to do with visibility!
+
+(blz 282) --> BELANGRIJK VOORBEELD!!!
+the type of the OBJECT determines which properties exist within the object in memory
+the type of REFERENCE to the object determines which methods and variables are accessible to the Java programming
+
+// Casting object (blz 282)
+casting an object from a subclass to a superclass doesn't require an explicit cast
+casting an object from a superclass to a subclass requires an explicit cast
+the compiler will not allow casts to unrelated types
+even when the code compiles a ClassCastException (runtime error) might be thrown
+
+// Virtual methods (blz 284) --> BELANGRIJK HOOFDSTUK
+a virtual method is a method in which the specific implementation is not determined until runtime
+all non-final, non-static and non-private Java methods are considered virtual methods, since any of them can be overridden at runtime
+if you call a method on an object that overrides a method, you get the overridden method, even if the call to the method is on a parent reference or within in the parent class
+
+// Polymorphic parameters (blz 285)
+one of the most usefull features of polymorphism is the ability to pass instances of a SUBCLASS or INTERFACE to a method
+for example you can define a method that takes an instance of an interface as a parameter
+in this manner any class that implements the interface can be passed to the method
+
+// Polymorphism and method overriding explained (blz 287)
+three rules
+
+
+---------------------------------------------
+06 Exceptions
+---------------------------------------------
+
+two approaches to deal with exceptions
+a method can handle the exception by it self
+or make it the caller's responsibility (throws)
+in case of multiple catch blocks the first matching catch block runs (only one catch block runs!)
+case blocks are ordered from most specific to less specific
+
+exceptions alter the program flow
+
+runtime exceptions (java.lang.RuntimeExpection) aka unchecked exceptions
+
+blz 302
+
+		     java.lang.Object
+				   |
+				   |
+		------------------------		
+		|  java.lang.Throwable |
+		------------------------
+		|				   	   |
+		|				   	   |
+java.lang.Exception	     java.lang.Error
+		|
+		|
+java.lang.RuntimeException
+
+
+curly brackets are required for the try, catch and finally blocks!
+// try finally is allowed (no catch)
+
+try {
+...
+} 
+finally { ... }
+
+
+you need to recognize 3 types of exceptions for the exam (blz 313): 
+- runtime exceptions (extends java.lang.RuntimeException)  --> they don't have to be handled or declared (CAN BE HANDLED or DECLARED) are thrown by the programmer or the JVM
+- check exceptions (extends java.lang.Exception)  --> they MUST be handled or declared are thrown by the programmer or the JVM
+- errors (extends java.lang.Error)  --> should not be handled or declared are thrown by the JVM
+
+TRICKY ClassCastException blz 315
+
+Runtime exceptions:
+ArithmeticException (divide by 0)
+ArrayIndexOutOfBoundsException
+ClassCastException
+NullPointerException (null reference)
+NumberFormatException --> convert a String to a numeric value
+IllegalArgumentException --> thrown by the programmer
+
+Checked exceptions:
+FileNotFoundException
+IOException
+
+Errors (the JVM stops):
+ExceptionInInitializerError --> TRICKY is thrown by the JVM when a static initialize block throws an exception and doesn't handle it
+StackOverflowError (infinite recursion)
+NoClassDefFoundError (when a class that the code uses is available compile time but NOT at runtime)
+
+// Exceptions in subclasses (blz 321)
+A subclass is allowed to declare FEWER CHECKED exceptions than the superclass or interface.
+A subclass is allowed to declare a subclass of an exception type
+It's OK to declare new RUNTIME EXCEPTIONS in a subclass!!!!
+
+try {}
+catch (Exception e) {
+	System.out.println(e);  // exception type and message
+	System.out.println(e.getMessage());  // message
+	System.out.println(e.printStackTrace());  // exception type and message and STACKtrace*
+}
+
+*it goes through the stack until it finds a method that can HANDLE the exception or runs out of stack
+

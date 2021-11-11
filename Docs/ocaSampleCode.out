@@ -1,0 +1,1095 @@
+#====================
+# Animal.java
+#====================
+
+public class Animal {
+	
+	public static void main(String[] args) {
+		
+		try {
+			//throw new AnimalsOutForAWalk();
+			throw new RuntimeException();
+			//throw new Exception();
+		}
+		
+		// catch blocks are ordered from most specific to less specific (watch out for unreachable code)
+		catch (ExhibitClosedForLunch e) { System.out.println("ExhibitClosedForLunch"); }
+		catch (ExhibitClosed e) { System.out.println("ExhibitClosed"); }
+		catch (AnimalsOutForAWalk e) { System.out.println("AnimalsOutForAWalk"); }
+		//catch (RuntimeException e) { System.out.println("RuntimeException"); }
+		catch (Exception e) { System.out.println("Exception"); }
+		finally { System.out.println("Finally"); }
+		System.out.println("Done");
+	}
+	
+}
+
+class AnimalsOutForAWalk extends RuntimeException {}
+class ExhibitClosed extends RuntimeException {}
+class ExhibitClosedForLunch extends ExhibitClosed {}
+
+
+#====================
+# Autoboxing.java
+#====================
+
+import java.util.ArrayList;
+import java.util.List;
+
+class Tester {
+	
+	
+	public static void main(String[] args) {
+		
+		// autoboxing ArrayList no promoting variables (int to Long not supported)
+		
+		List<Float> numbers = new ArrayList<>();
+		//numbers.add(1);  // error: argument mismatch; int cannot be converted to Float
+		numbers.add(1f);  // autoboxing float to java.lang.Float
+		
+		List<Long> numbers2 = new ArrayList<>();
+		//numbers2.add(1);  // error: argument mismatch; int cannot be converted to Long
+		numbers2.add(1l);  // autoboxing long to java.lang.Long
+		
+		List<Integer> numbers3 = new ArrayList<>();
+		//numbers3.add((byte) 1);  // error: argument mismatch; byte cannot be converted to Integer
+		
+	}
+}
+
+
+#====================
+# Bunny.java
+#====================
+
+// blz 321
+
+class MyException extends Exception {}
+class MyRuntimException extends RuntimeException {}
+
+
+class Hopper {
+	public void hop() {}
+}
+
+
+public class Bunny extends Hopper {
+	
+	// Compiler error not allowed to throw a new CHECKED exception
+	// public void hop() throws MyException {}  // overridden method does not throw MyException
+	
+	// Is allowed to throw a new RUNTIME exception!!!
+	public void hop() throws MyRuntimException {}
+	
+}
+
+
+#====================
+# Capybara.java
+#====================
+
+class Rodent {}
+
+class Bird {}
+
+public class Capybara extends Rodent {
+	
+	public static void main(String[] args) {
+		Rodent rodent = new Rodent();
+		Capybara capybara = (Capybara) rodent;  // java.lang.ClassCastException: Rodent cannot be cast to Capybara  --> runtime exception
+		//Capybara capybara2 = (Bird) rodent;  // error: incompatible types: Rodent cannot be converted to Bird  --> compiler error unrelated types
+	}
+	
+}
+
+
+#====================
+# Cat.java
+#====================
+
+public class Cat {
+	
+	public String name;
+	
+	public void parseName() {
+		System.out.println("1");
+		try {
+			System.out.println("2");
+			int x = Integer.parseInt(name);
+			System.out.println("3");
+		}
+		catch(NullPointerException e) {
+			System.out.println("4");
+		}
+		System.out.println("5");
+	}
+		
+	public static void main(String[] args) {
+		Cat leo = new Cat();
+		leo.name = "Leo";
+		leo.parseName();
+		System.out.println("6");
+	}
+	
+}
+
+/*
+1
+2
+Exception in thread "main" java.lang.NumberFormatException: For input string: "Leo"  --> RuntimeException no need to be handled or declared!!!
+        at java.lang.NumberFormatException.forInputString(NumberFormatException.java:65)
+        at java.lang.Integer.parseInt(Integer.java:580)
+        at java.lang.Integer.parseInt(Integer.java:615)
+        at Cat.parseName(Cat.java:9)
+        at Cat.main(Cat.java:21)
+*/
+
+
+#====================
+# ConstructorChain.java
+#====================
+
+class Mammal {
+	
+	protected String name;
+	
+	public Mammal() {
+		System.out.println("mammal");
+	}
+	
+	public Mammal(int age) {
+		System.out.println("age: " + age);
+	}
+}
+
+class Elephant extends Mammal {
+	
+	protected String name;
+	
+	public Elephant() {
+		//super(10);
+		this("Dumbo");
+	}
+	
+	public Elephant(String name) {
+		// super();   // is inserted here by the compiler and calls the no-args constructor, compiler error as no no-args constructor is available
+		System.out.println("name: " + name);
+	}
+}
+
+public class ConstructorChain {
+	
+	public static void main(String[] args) {
+		new Elephant();
+	}
+	
+}
+
+
+#====================
+# Frog.java
+#====================
+
+interface CanHop {}
+
+public class Frog implements CanHop {
+	public static void main(String[] args) {
+		Object frog1 = new TurtuleFrog();
+		Frog frog2 = new TurtuleFrog();
+		TurtuleFrog frog3 = new TurtuleFrog();
+		CanHop frog4 = new TurtuleFrog();
+		// BrazilianHornedFrog frog5 = new TurtuleFrog();  // error: incompatible types: TurtuleFrog cannot be converted to BrazilianHornedFrog
+		
+		// Any class or interface that is a SUPERTYPE of TurtuleFrog is allowed
+		
+	}
+}
+
+class BrazilianHornedFrog extends Frog {}
+class TurtuleFrog extends Frog {}
+
+
+#====================
+# HumpbackWhale.java
+#====================
+
+abstract class Whale {
+	protected abstract void sing();
+	protected abstract void getWeigth();
+	protected void getSize() { System.out.println("Size is 8 meters."); }
+}
+
+public class HumpbackWhale extends Whale {
+	
+	public void sing() {  // implement a abstract method by overriding it, note the ACCESS MODIFIER IS PUBLIC so its broader than its parent
+		System.out.println("Altijd is kortjakje ziek");
+	}
+	
+	public void sing(String song) {  // implement a abstract method by overriding it NOT by overloading it, note the ACCESS MODIFIER IS PUBLIC so its broader than its parent
+		System.out.println("Singing song " + song);
+	}
+	
+	public void getWeigth() { System.out.println("Weigth is 1000kg"); }  // ALL abstract methods need to be implemented by the FIRST concrete subclass
+	
+	//protected void getSize() { System.out.println("Size is 10 meters."); }  // overrid
+	
+	public static void main(String[] args) {
+		HumpbackWhale h = new HumpbackWhale();
+		h.sing();
+		h.getSize();
+		
+		//Whale w = new Whale();  // error: Whale is abstract; cannot be instantiated
+	
+	}
+	
+}
+
+
+#====================
+# InitializationOrder.java
+#====================
+
+// blz 202
+
+class InitializationOrder {
+	
+	private String name = "Torchie";
+	
+	{ System.out.println(name); }
+
+    private static int COUNT = 0;
+
+    static { System.out.println(COUNT); }
+
+	{ COUNT++; System.out.println(COUNT); }
+	
+	public InitializationOrder() {
+		System.out.println("constructor");
+	}
+	
+	public static void main(String[] args) {
+		
+		// Try when commenting out the below 2 lines
+		// 0 --> only the static variable and initializer are executed
+		
+		
+		System.out.println("ready to construct");
+		new InitializationOrder();
+		
+		//0
+		//ready to construct
+		//Torchie
+		//1
+		//constructor
+		
+	}
+	
+}
+
+
+#====================
+# Kangaroo1.java
+#====================
+
+// blz 254
+// Marsupials are an infraclass of mammals living primarily in Australasia and the Americas.
+class Marsupial {
+	
+	public static boolean isBiped() {  // An animal having two feet, such as a bird or human.
+		return false;
+	}
+	
+	public void getMarsupialDescription() {
+		System.out.println("Marsupial walks on two legs: " + isBiped());
+	}
+	
+}
+
+
+public class Kangaroo1 extends Marsupial {
+	
+	public static boolean isBiped() {  // hidden static method
+		return true;		
+	}
+	
+	public void getKangarooDescription() {
+		System.out.println("Kangaroo hops on two legs: " + isBiped());
+	}
+	
+	// example using a hidden static method
+	public static void main(String[] args) {
+		Kangaroo1 joey = new Kangaroo1();
+		joey.getMarsupialDescription();
+		joey.getKangarooDescription();
+		
+		// Marsupial walks on two legs: false  <-- calls isBiped() from parent class !!!!!
+		// Kangaroo hops on two legs: true
+		
+	}
+	
+	
+}
+
+
+#====================
+# Kangaroo2.java
+#====================
+
+// blz 254
+// Marsupials are an infraclass of mammals living primarily in Australasia and the Americas.
+class Marsupial {
+	
+	public boolean isBiped() {  // An animal having two feet, such as a bird or human.
+		return false;
+	}
+	
+	public void getMarsupialDescription() {
+		System.out.println("Marsupial walks on two legs: " + isBiped());
+	}
+	
+}
+
+
+public class Kangaroo2 extends Marsupial {
+	
+	public boolean isBiped() {  // override method (NO hidden static method)
+		return true;		
+	}
+	
+	public void getKangarooDescription() {
+		System.out.println("Kangaroo hops on two legs: " + isBiped());
+		System.out.println("Kangaroo hops on two legs: " + super.isBiped());
+	}
+	
+	// example using a hidden static method
+	public static void main(String[] args) {
+		Kangaroo2 joey = new Kangaroo2();
+		joey.getMarsupialDescription();
+		joey.getKangarooDescription();
+
+		// Marsupial walks on two legs: true  <-- calls isBiped() from child class !!!!!!
+		
+		// Kangaroo hops on two legs: true
+		// Kangaroo hops on two legs: false  <-- calls isBiped() from parent class using super
+	}
+	
+	
+}
+
+
+#====================
+# Lemur.java
+#====================
+
+interface HasTail {  // an interface can have a default or a public access modifier!!!
+	
+	public boolean isTailStripped();
+	
+}
+
+class Primate {  // a class can have a protected, default or public access modifier!!!
+	
+	// A primate is a mammal of the order Primates. In taxonomy, primates include two distinct lineages, strepsirrhines and haplorhines
+	
+	public String higherClassification = "Primatomorpha";
+	public boolean hasHair() { return true; }
+	
+}
+
+public class Lemur extends Primate implements HasTail {
+	
+	// Lemurs are a clade of strepsirrhine primates endemic to the island of Madagascar
+	
+	
+	public boolean hasHair() { return false; }  // overrides method from Primate class
+	
+	public boolean isTailStripped() {  // implements interface HasTail
+		return false;
+	}
+	
+	public int age = 10;
+	
+	public static void main(String[] args) {
+		
+		Lemur lemur = new Lemur();
+		System.out.println("higherClassification: " + lemur.higherClassification);
+		System.out.println("age: " + lemur.age);
+		System.out.println("isTailStripped: " + lemur.isTailStripped());
+		System.out.println("hasHair: " + lemur.hasHair());
+		
+		System.out.println();
+		
+		HasTail hasTail = lemur;
+		System.out.println("isTailStripped: " + hasTail.isTailStripped());
+		//System.out.println("higherClassification: " + lemur.higherClassification);
+		//System.out.println(hasTail.age);
+		//System.out.println(hasTail.hasHair());
+		
+		System.out.println();
+		
+		Primate primate = lemur;
+		System.out.println("hasHair: " + primate.hasHair());  // TRICKY returns false when overridden!!! --> because the object type is Lemur (uses virtual method)
+		System.out.println("higherClassification: " + lemur.higherClassification);
+		//System.out.println(primate.isTailStripped());
+		//System.out.println(primate.age);
+		
+		// Lemur lemur2 = primate;  // error: incompatible types: Primate cannot be converted to Lemur
+		
+		Lemur lemur3 = (Lemur)primate;  // cast is required!
+		
+		
+	}
+	
+}
+
+
+#====================
+# OCA.java
+#====================
+
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
+
+class OCA {
+	
+	public static void main(String[] args) {
+		
+		
+		// StringBuffer is mutable, and its primary use is for constructing strings
+		
+		// StringBuilder sb = "HelloWorld";  // Does not compile you can't directly assign a String to StringBuilder
+		StringBuilder sb = new StringBuilder("HelloWorld");
+		sb.append(1l).append(true).append('a');  // You can assign different primitives to StringBuilder
+		System.out.println(sb); // HelloWorld1truea
+		
+		
+		System.out.println("------------------");
+		
+		
+		String s = "HelloWorld";
+		StringBuilder sb1 = new StringBuilder("HelloWorld");
+		StringBuilder sb2 = new StringBuilder("HelloWorld");
+		
+		// Compare a String with StringBuilder
+		// System.out.println(s == sb1);  // Compiler error: incomparable types: String and StringBuilder
+		System.out.println(s.equals(sb1));  // false
+		System.out.println(s == sb1.toString());  // false
+		System.out.println(s.equals(sb1.toString()));  // true
+		
+		
+		System.out.println("------------------");
+		
+		
+		// Compare two StringBuilder objects
+		System.out.println(sb1 == sb2);  // false StringBuilder does not override Object's .equals() function String does!
+		System.out.println(sb1.equals(sb2));  // false
+		System.out.println(sb1.toString() == sb2.toString());  // false
+		System.out.println(sb1.toString().equals(sb2.toString()));  // true use toString() to compare the values!!!
+		
+		
+		System.out.println("------------------");
+		
+		// Returns a substring (String), this method is NOT mutable! The result needs to be assigned to a String.
+		sb1.substring(0, 5);
+		// sb1 = sb1.substring(0, 5);  // Compiler error: incompatible types: String cannot be converted to StringBuilder
+		System.out.println(sb1);
+		
+		System.out.println("------------------");
+		
+		// Arrays
+		// int[] numbers = new int[];  // Compiler error: array dimension missing
+		int[] numbers1 = new int[1];  // Array is created with the default int values 0
+		int[] numbers2 = { 4, 3, 2, 1 };  // Array is created with the specified values
+		//numbers1[2] = 1;  // Runtime expection: java.lang.ArrayIndexOutOfBoundsException
+		
+		Arrays.sort(numbers2);  // Is mutable
+		System.out.println(Arrays.binarySearch(numbers2 , 1));  // Array needs to be sorted first
+		for (int i: numbers2) System.out.print(i + " ");
+		
+		int[][] twoDNumbers = new int[1][];  // The second dimension can be empty
+		
+		
+		System.out.println("\n------------------");
+		
+		
+		// Arrays.sort(myArr);
+		// Arrays.binarySearch(myArr, "some value");  // When not found the following is returned: one smaller than the negative index
+		// List<String> mylist = Arrays.asList(array);  // Convert an Array to an BACKED FIXED SIZE ArrayList (these are linked)
+		// List<String> mylist = Arrays.asList("one", "two");  // asList takes a varargs as param this is a one-liner to create a list
+		
+		// Collections.sort(myList);
+		// Collections.binarySearch(myList, "some value");
+		// myList1.equals(myList2)  // ArrayList implements equals
+		// String[] myArr = mylist.toArray(new String[0]);  // Convert an ArrayList to an Array .toArray() runs on ArrayList
+		
+		// AlphaNumeric sort: 30, 8, 3A, FF --> 30, 3A, 8, FF
+		
+		
+		// length
+		// myArray.length  // property
+		// myString.length()  // method
+		// myList.size()  // method
+		
+		// Mutable / Immutable
+		// String is immutable
+		// StringBuilder is mutable
+		// Array is mutable
+		// ArrayList is mutable
+		// LocalDate, LocalTime, LocalDateTime are immutable
+		
+		
+		ArrayList<Integer> list1 = new ArrayList<Integer>();
+		ArrayList<Integer> list2 = new ArrayList<Integer>();
+		
+		list1.add(new Integer(2));
+		list1.add(3);
+		list1.add(1);  // Using autoboxing here converting a primitive to a Wrapper class
+		Collections.sort(list1);  // Collections.sort() is mutable	
+		
+		list2.add(1);
+		list2.add(2);
+		list2.add(3);
+		
+		int myNumber1 = list1.get(1);  // Unboxing here 
+		Integer myNumber2 = list1.get(1);
+		
+		// Both lists are equal
+		System.out.println(list1.equals(list2));  // true ArrayList implements .equals()
+		
+		
+		
+		// Down casting
+		double d1 = 1.0;
+		byte b1 = (byte) d1;
+		short s1 = (short) d1;
+		int i1 = (int) d1;
+		long l1 = (long) d1;
+		float f1 = (float) d1;
+		
+		// Up casting
+		byte b2 = 1;
+		short s2 = b2;
+		int i2 = b2;
+		long l2 = b2;
+		float f2 = b2;
+		double d2 = b2;
+		
+		float f3 = 1l;
+		float f4 = (float) 1l;
+		
+	}
+	
+	
+	
+}
+
+
+#====================
+# ocaSampleCode.out
+#====================
+
+
+
+
+#====================
+# Overloading.java
+#====================
+
+class Overloading {
+
+	//public static void test(int number) {
+	//	System.out.println(number + " using int primitive");
+	//}
+	
+	//public static void test(long number) {
+	//	System.out.println(number + " long primitive");
+	//}
+
+	//public static void test(Integer number) {
+	//	System.out.println(number + " Integer class");
+	//}
+	
+	public static void test(Long number) {
+		System.out.println(number + " Long class");
+	}
+
+    public static void test(Object o) {
+		System.out.println(o.getClass().getName() + " Object");
+	}
+
+	// compiler error: int[] and varargs are considered the same
+	//public static void test(int[] numbers) {
+	//	System.out.println(numbers.length);
+	//}
+	
+	//public static void test(int... numbers) {
+	//	System.out.println("int varargs");
+	//}
+
+	public static void test(long... numbers) {
+		System.out.println("long varargs");
+	}
+
+	
+	public static void main(String[] args) {
+		
+		test(new byte[] {1, 2, 3});  // --> [B Object
+		test((byte) 1, (byte) 2, (byte) 3);  // --> long varargs
+		test((int)1l);  // --> java.lang.Integer Object
+		test(new Integer(1));  // --> java.lang.Integer Object
+		test(4);  // --> java.lang.Integer Object
+		
+		// exact match
+		// wider primitive
+		// autoboxing (int --> java.lang.Integer) of the same type! (NOT int --> java.lang.Long)
+		// Object
+		// varargs
+		
+	}
+	
+	
+}
+
+
+#====================
+# Peacock.java
+#====================
+
+class Bird {
+	
+	public String getName() {  // aka virtual method!
+		return "Unknown";
+	}
+
+	public void displayInformation() {
+		System.out.println("The bird name is: " + getName());  // getName() uses the override implementation!!!
+	}
+	
+}
+
+
+public class Peacock extends Bird {
+	
+	public String getName() {
+		return "Peacock";
+	}
+	
+	public static void main(String[] args) {
+		Bird b = new Peacock();  // object type vs reference type
+		b.displayInformation();
+		
+		// The bird name is: Peacock
+		// if you call a method on an OBJECT that overrides a method, you get the overridden method, even if the call to the method is on a parent reference or within in the parent class
+	}
+	
+}
+
+
+
+#====================
+# PredicateSearch.java
+#====================
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.*;
+
+class Animal {
+	private String species;
+	private boolean canHop;
+	private boolean canSwim;
+	
+	Animal(String speciesName, boolean hopper, boolean swimmer) {
+		this.species = speciesName;
+		this.canHop = hopper;
+		this.canSwim = swimmer;
+	}
+	
+	boolean canHop() { return canHop; }
+	boolean canSwim() { return canSwim; }
+	public String toString() { return species; }
+	
+}
+
+public class PredicateSearch {
+	
+	public static void main(String[] args) {
+  	   List<Animal> animals = new ArrayList<>();
+	   animals.add(new Animal("rabbit", true, false));
+ 	   print(animals, a -> a.canHop());
+	}
+	
+    private static void print(List<Animal> animals, Predicate<Animal> p) {
+		for(Animal a: animals) {
+		  if (p.test(a))
+            System.out.print(a + "");			  
+		}
+		System.out.println();
+		
+	}
+	
+}
+
+
+#====================
+# Primitives.java
+#====================
+
+import java.util.ArrayList;
+
+public class Tester {
+	
+	public static void main(String[] args) {
+		
+		long[] numbers = new long[2];
+		numbers[0] = (byte)1;
+		
+		byte[] numbers2 = new byte[2];  // works because primitives are used
+		numbers2[0] = 1;
+		
+		float[] numbers3 = new float[2];
+		//numbers3[0] = 1.0;  // error: incompatible types: possible lossy conversion from double to float
+		
+		
+		ArrayList<Byte> numbers4 = new ArrayList<>();
+		numbers4.add((byte)1);  //
+		numbers4.add(1);  // error: no suitable method found for add(int) doesn't work because Classes are used
+	}
+	
+}
+
+
+#====================
+# printToFile.sh
+#====================
+
+#!/bin/bash
+
+cat /dev/null > ocaSampleCode.out
+
+for f in $(ls); do
+
+    printf "#====================\n# %s\n#====================\n\n" $f >> ocaSampleCode.out
+
+    cat $f >> ocaSampleCode.out
+
+    printf "\n\n\n" >> ocaSampleCode.out
+
+done
+
+
+
+#====================
+# Snake.java
+#====================
+
+// blz 250 / 251
+
+class MyCustomException extends Exception {}
+
+class Reptile {
+	
+	protected int size = 5;
+	
+	protected boolean hasLegs() throws MyCustomException {
+		throw new MyCustomException();
+	}
+	
+	protected double getWeigth() throws Exception {
+		return 2;
+	}
+	
+	protected double getHeigth() throws MyCustomException {
+		return 2;		
+	}
+	
+	protected int getLength() {
+		return 10;
+	}
+	
+	protected final void HelloWorld() {  // final method can't be overridden
+		System.out.println("HelloWorld");
+	}
+}
+
+public class Snake extends Reptile {
+	
+	protected int size = 10;  // hiding variables is considered bad practise
+	
+	protected int getSize() {
+		return super.size;
+	}
+	
+	protected boolean hasLegs() {  // override specifying a more narrow exception; covariant exception 
+		return false;
+	}
+	
+	protected double getWeigth() throws MyCustomException {  // override specifying a more narrow exception; covariant exception
+		return 4;
+	}
+	
+	//protected double getHeigth() throws Exception {  // error: getHeigth() in Snake cannot override getHeigth() in Reptile as specifying a more generic exception
+	//	return 2;
+	//}
+	
+	//protected int getLength() throws MyCustomException {  // error: getLength() in Snake cannot override getLength() in Reptile as specifying a more generic exception
+	//	return 10;
+	//}
+	
+	protected void HelloWorld(String message) {  // OVERLOADED from parent
+		System.out.println("Hello " + message);
+	}
+	
+
+	
+	public static void main(String[] args) throws Exception {
+		Snake snake = new Snake();  // calling default no-args constructor (first java.lang.Object is created)
+		System.out.println("size is " + snake.getSize());  // returns the parent variable using super.size;
+		System.out.println("heigth is " + snake.getHeigth());  // calls a method on the parent class using a child reference
+
+		
+		
+	}
+	
+}
+
+
+#====================
+# Tester.java
+#====================
+
+class Tester {
+	
+	public static void main(String[] args) {
+		
+		double d1 = 1.99;
+		int i1 = (int) d1;
+		
+		System.out.println(i1);  // 1 (floor)
+		
+		short s1 = 1;
+		double d2 = 1.0000;
+		
+		System.out.println(s1 == d2);  // true
+		
+		System.out.println("--------------");
+		
+		String str1 = "aaa";
+		String str2 = "aaa";
+		String str3 = new String("aaa");
+		String str4 = new String("aaa");
+		StringBuilder sb1 = new StringBuilder("aaa");
+		StringBuilder sb2 = new StringBuilder("aaa");
+		
+		System.out.println(str1 == str2);  // true REFER TO THE SAME STRING IN THE JVM STRING POOL!!!
+		System.out.println(str1.equals(str2));  // true String implement equals
+		
+		System.out.println("--------------");
+		
+		System.out.println(str3 == str1);  // false
+		System.out.println(str3 == str4);  // false REFER TO DIFFERENT OBJECTS ON THE HEAP!!!
+		System.out.println(str3.equals(str4));  // true String implement equals
+		
+		System.out.println("--------------");
+		
+		System.out.println(sb1 == sb2);  // false don't refer to the same object
+		System.out.println(sb1.equals(sb2));  // false StringBuilder doesn't implement equals
+		System.out.println(sb1.toString().equals(sb2.toString()));  // true
+
+		System.out.println("--------------");
+		
+		//System.out.println(str1 == sb1);  // COMPILER ERROR: INCOMPARABLE TYPES: String and StringBuilder
+		System.out.println(str1.equals(sb1));  // false
+		System.out.println(str1.equals(sb1.toString()));  // true
+
+		
+		
+	}
+	
+}
+
+
+#====================
+# Tester2.java
+#====================
+
+interface DoingNerdyComputerStuff { void googling(); }  // public abstract
+interface SpinningRecords { void scratching(); }  // public abstract
+interface Hobbies extends DoingNerdyComputerStuff, SpinningRecords {}
+
+class Miel implements Hobbies {
+	Miel() {}  // no-args constructor (NO default no-args constructor)
+	Miel(String s) { System.out.println(s); }
+	public void googling() { System.out.println("Busy googling stuff"); }
+	public void scratching() { System.out.println("Ice ice baby"); }
+}
+
+class Kim extends Miel {
+	
+	Kim() {
+		super("Miel");
+		System.out.println("Kim");
+	}
+}
+
+
+public class Tester2 {
+	
+	public static void main(String... args) {
+		float f1 = 102;
+		float f2 = (int)102.0;  // cast double to int
+		//float f3 = 1f * 0.0;  // value is promoted to double
+		float f4 = 1f * (short)0.0;
+		//float f5 = 1f * (boolean)0;
+		
+		Kim kimmie = new Kim();
+		kimmie.googling();
+	}
+	
+	public void returningVoid() {
+		return;  // is valid, returns void!
+	}
+	
+}
+
+
+#====================
+# TraditionalSearch.java
+#====================
+
+import java.util.ArrayList;
+import java.util.List;
+
+class Animal {
+	private String species;
+	private boolean canHop;
+	private boolean canSwim;
+	
+	Animal(String speciesName, boolean hopper, boolean swimmer) {
+		this.species = speciesName;
+		this.canHop = hopper;
+		this.canSwim = swimmer;
+	}
+	
+	boolean canHop() { return canHop; }
+	boolean canSwim() { return canSwim; }
+	public String toString() { return species; }
+	
+}
+
+interface CheckTrait {
+	boolean test(Animal a);
+}
+
+interface Tester {
+	String test(String s1, String s2);
+}
+
+//class CheckIfHopper implements CheckTrait {
+//	public boolean test(Animal a) {
+//		return a.canHop();
+//	}
+//}
+
+public class TraditionalSearch {
+	
+	public static void main(String[] args) {
+		List<Animal> animals = new ArrayList<Animal>();
+		animals.add(new Animal("fish", false, true));
+		animals.add(new Animal("kangaroo", true, false));
+		animals.add(new Animal("rabbit", true, false));
+		animals.add(new Animal("turtle", false, true));
+		
+		//print(animals, new CheckIfHopper());
+		print(animals, a -> a.canHop());
+		print(animals, a -> a.canSwim());
+		print(animals, a -> !a.canSwim());
+		
+		tester("aaa", "bbb", (s1, s2) -> s1);
+		tester("bbb", "aaa", (s1, s2) -> s1);
+	}
+	
+	private static void print(List<Animal> animals, CheckTrait checker) {
+		for (Animal a: animals) {
+			if (checker.test(a))
+				System.out.print(a + " ");
+		}
+		System.out.println();
+	}
+	
+	private static void tester(String s1, String s2, Tester t) {
+		System.out.println(t.test(s1, s2));
+	}
+	
+}
+
+
+#====================
+# YetMoreInitializationOrder.java
+#====================
+
+// blz 203
+
+public class YetMoreInitializationOrder {
+	
+    static { add(2); }	
+	static void add(int num) { System.out.println(num + " "); }
+	YetMoreInitializationOrder() { add(5); }  // be aware this a default constructor with a default access modifier!!!
+	static { add(4); }
+	{ add(6); }
+	static { new YetMoreInitializationOrder(); }
+	{ add(8); }
+	
+	public static void main(String[] args) { }	
+	
+	// static variables and initializers are load then the java command is issued
+	// tricky part is that the instance variables and initializers come BEFORE the constructor
+	// it's allowed to call a static method from a non static context
+	// 2 4 6 8 5
+	
+}
+
+
+#====================
+# Zooworker.java
+#====================
+
+class Reptile {
+	public String getName() {
+		return "Reptile";
+	}
+}
+
+class Alligator extends Reptile {
+	public String getName() {  // override
+		return "Alligator";
+	}
+}
+
+class Crocodile extends Reptile {
+	public String getName() {  // override
+		return "Crocodile";
+	}
+}
+
+class Zooworker {
+
+	public static void feed(Reptile reptile) {  // method using a polymorphic parameter blz 285
+		System.out.println("Feeding reptile " + reptile.getName());
+	}
+	
+	public static void main(String[] args) {
+		feed(new Alligator());
+		feed(new Crocodile());
+		feed(new Reptile());
+		
+		
+		// Feeding reptile Alligator
+		// Feeding reptile Crocodile
+		// Feeding reptile Reptile
+	}
+	
+}
+
+

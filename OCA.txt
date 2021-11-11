@@ -1,0 +1,15 @@
+90 vragen 150 minuten
+60 vragen 100 minuten
+
+
+let op of er een default no-args constructor aanwezig is anders moet er een user defined no-args constructor zijn
+bij static imports worden alleen de members geimporteerd
+
+interface is default of public
+public static final myConstante;
+public abstract myMethod();
+public default
+public static
+
+
+volgorde van exception
